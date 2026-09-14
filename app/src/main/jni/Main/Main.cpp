@@ -9,9 +9,20 @@
 #include "../Include/Drawing.h"
 #include "../Include/Unity.h"
 
+bool aimbotEnabled = false;
+bool espEnabled = false;
+float fovValue = 90.0f;
+
 void DrawMenu() {
-    ImGui::ShowDemoWindow();
+    ImGui::Begin("Meu Mod Menu | Android", nullptr, ImGuiWindowFlags_NoSavedSettings);
+    ImGui::Text("Status: Ativo");
+    ImGui::Separator();
+    ImGui::Checkbox("Aimbot", &aimbotEnabled);
+    ImGui::Checkbox("ESP Box", &espEnabled);
+    ImGui::SliderFloat("FOV do Aimbot", &fovValue, 10.0f, 180.0f);
+    ImGui::End();
 }
+
 
 void *thread(void *) {
     LOGI(OBFUSCATE("Main Thread Loaded: %d"), gettid());
