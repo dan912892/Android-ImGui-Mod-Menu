@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout do projeto
         uses: actions/checkout@v4
         
       - name: Configurar Java 17
@@ -14,23 +14,24 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          
-      - name: Instalar NDK 24
+
+      - name: Corrigir versão fantasma do NDK
         run: |
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;24.0.7856742" "cmake;3.22.1"
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          # Substitui a versão quebrada pela versão 25 que já existe no GitHub
+          find . -name "build.gradle" -type f -exec sed -i 's/24.0.7856742/25.2.9519653/g' {} +
           
-      - name: Forçar Caminho do NDK
+      - name: Aceitar Licenças e Configurar Pastas
         run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
           echo "sdk.dir=$ANDROID_HOME" > local.properties
-          echo "ndk.dir=$ANDROID_HOME/ndk/24.0.7856742" >> local.properties
+          echo "ndk.dir=$ANDROID_NDK_HOME" >> local.properties
           
-      - name: Permissão e Compilação
+      - name: Compilar APK
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
           
-      - name: Upload do APK
+      - name: Upload do Arquivo APK
         uses: actions/upload-artifact@v4
         with:
           name: mod-menu-apk
