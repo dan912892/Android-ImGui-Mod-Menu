@@ -15,15 +15,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Instalar NDK e CMake
+      - name: Instalar NDK 24
         run: |
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;25.1.8937393" "cmake;3.22.1"
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;24.0.7856742" "cmake;3.22.1"
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
           
-      - name: Forçar Caminho do NDK (Correção)
+      - name: Forçar Caminho do NDK
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
-          echo "ndk.dir=$ANDROID_HOME/ndk/25.1.8937393" >> local.properties
+          echo "ndk.dir=$ANDROID_HOME/ndk/24.0.7856742" >> local.properties
           
       - name: Permissão e Compilação
         run: |
