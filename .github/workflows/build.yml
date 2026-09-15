@@ -15,10 +15,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Corrigir versão fantasma do NDK
+      - name: Sincronizar versão exata do NDK
         run: |
-          # Substitui a versão quebrada pela versão 25 que já existe no GitHub
-          find . -name "build.gradle" -type f -exec sed -i 's/24.0.7856742/25.2.9519653/g' {} +
+          find . -name "build.gradle" -type f -exec sed -i 's/24.0.7856742/27.3.13750724/g' {} +
           
       - name: Aceitar Licenças e Configurar Pastas
         run: |
