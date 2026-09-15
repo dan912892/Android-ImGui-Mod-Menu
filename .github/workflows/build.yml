@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Mod Menu APK
 
 on: [push, pull_request]
 
@@ -6,26 +6,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: set up JDK 17
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Configurar Java 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Install NDK and CMake
+      - name: Instalar NDK e CMake
         run: |
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;25.1.8937393" "cmake;3.22.1"
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
           
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-        
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug
-        
-      - name: Upload APK
+      - name: Forçar Caminho do NDK (Correção)
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "ndk.dir=$ANDROID_HOME/ndk/25.1.8937393" >> local.properties
+          
+      - name: Permissão e Compilação
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+          
+      - name: Upload do APK
         uses: actions/upload-artifact@v4
         with:
           name: mod-menu-apk
